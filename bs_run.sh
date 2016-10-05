@@ -6,7 +6,7 @@
 # using a single sample with fastq files
 # named 1.fastq.gz and 2.fastq.gz
 # *******************************************
-set -o verbose
+#set -o verbose
 export SENTIEON_LICENSE=master.sentieon.com:9002
 sample=$1
 fastq_dir=$2
