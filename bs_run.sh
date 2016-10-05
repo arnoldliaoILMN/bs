@@ -18,22 +18,22 @@ platform="ILLUMINA"
 #echo fastq is an array ${fastq1[@]}
 # Update with the location of the reference data files
 ## going to have to redo these
-cd /scratch; wget https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
+cd /data/; wget https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
 
 fasta="/genomes/Homo_sapiens/UCSC/hg19/Annotation/Canvas/genome.fa"
-dbsnp="/scratch/dbsnp_138.hg19.vcf"
-known_sites="/scratch/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+dbsnp="/data/dbsnp_138.hg19.vcf"
+known_sites="/data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
 
 #determine whether Variant Quality Score Recalibration will be run
 #VQSR should only be run when there are sufficient variants called
 run_vqsr="yes"
 # Update with the location of the resource files for VQSR
-vqsr_Mill="/scratch/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
-vqsr_1000G_omni="/scratch/1000G_omni2.5.hg19.sites.vcf"
-vqsr_hapmap="/scratch/hapmap_3.3.hg19.sites.vcf"
-vqsr_1000G_phase1="/scratch/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
-vqsr_1000G_phase1_indel="/scratch/1000G_phase1.indels.hg19.sites.vcf"
-vqsr_dbsnp="/scratch/dbsnp_138.hg19.vcf"
+vqsr_Mill="/data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+vqsr_1000G_omni="/data/1000G_omni2.5.hg19.sites.vcf"
+vqsr_hapmap="/data/hapmap_3.3.hg19.sites.vcf"
+vqsr_1000G_phase1="/data/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
+vqsr_1000G_phase1_indel="/data/1000G_phase1.indels.hg19.sites.vcf"
+vqsr_dbsnp="/data/dbsnp_138.hg19.vcf"
 
 # Update with the location of the Sentieon software package and license file
 release_dir=/sentieon-genomics-201608
