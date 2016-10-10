@@ -38,7 +38,7 @@ vqsr_dbsnp="/data/dbsnp_138.hg19.vcf"
 
 # Update with the location of the Sentieon software package and license file
 release_dir=/sentieon-genomics-201608
-
+echo 41
 # Other settings
 nt=32 #number of threads to use in computation
 workdir=$out
@@ -54,7 +54,7 @@ cd $workdir
 # 1. Mapping reads with BWA-MEM, sorting
 # ******************************************
 #The results of this call are dependent on the number of threads used. To have number of threads independent results, add chunk size option -K 100000000 
-
+echo starting bwa
 for i in ${!fastq1[@]};do 
 	$release_dir/bin/bwa mem -M -R "@RG\tID:group$i\tSM:$sample\tPL:$platform" -t $nt $fasta ${fastq1[$i]} ${fastq2[$i]} | $release_dir/bin/sentieon util sort -o sorted$i.bam -t $nt --sam2bam -i -
 done
@@ -63,6 +63,7 @@ sorted_arg=''
 for i in `ls sorted*bam`; do 
 	sorted_arg=`echo -i $i`
 done
+echo ended bwa
 echo sorted_arg is $sorted_arg
 # ******************************************
 # 2. Metrics
