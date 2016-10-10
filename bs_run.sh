@@ -19,7 +19,7 @@ platform="ILLUMINA"
 #echo fastq is fastq1[0]
 # Update with the location of the reference data files
 ## going to have to redo these
-cd /data/; wget -quiet https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
+cd /data/; wget https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
 
 fasta="/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
 dbsnp="/data/dbsnp_138.hg19.vcf"
