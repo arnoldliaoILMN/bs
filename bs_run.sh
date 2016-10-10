@@ -7,7 +7,7 @@
 # named 1.fastq.gz and 2.fastq.gz
 # *******************************************
 #set -o verbose
-echo 10:26am
+echo 1026am
 export SENTIEON_LICENSE=master.sentieon.com:9002
 sample=$1
 fastq_dir=$2
@@ -16,7 +16,7 @@ out=$3
 fastq1=`ls $fastq_dir/*_R1*_*fastq.gz`
 fastq2=`ls $fastq_dir/*_R2*_*fastq.gz`
 platform="ILLUMINA"
-echo fastq is an array ${fastq1[@]}
+#echo fastq is fastq1[0]
 # Update with the location of the reference data files
 ## going to have to redo these
 cd /data/; wget -quiet https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
