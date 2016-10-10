@@ -12,13 +12,13 @@ sample=$1
 fastq_dir=$2
 out=$3
 
-fastq1=`ls $fastq_dir/*_R1*_*fastq.gz $fastq_dir/../../../*_R1*_*fastq.gz`
-fastq2=`ls $fastq_dir/*_R2*_*fastq.gz $fastq_dir/../../../*_R2*_*fastq.gz`
+fastq1=`ls $fastq_dir/*_R1*_*fastq.gz`
+fastq2=`ls $fastq_dir/*_R2*_*fastq.gz`
 platform="ILLUMINA"
 #echo fastq is an array ${fastq1[@]}
 # Update with the location of the reference data files
 ## going to have to redo these
-cd /data/; wget https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
+cd /data/; wget -quiet https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
 
 fasta="/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
 dbsnp="/data/dbsnp_138.hg19.vcf"
