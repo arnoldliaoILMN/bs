@@ -7,7 +7,7 @@
 # named 1.fastq.gz and 2.fastq.gz
 # *******************************************
 #set -o verbose
-echo 1026am
+echo 161017 1418am
 export SENTIEON_LICENSE=master.sentieon.com:9002
 sample=$1
 fastq_dir=$2
@@ -22,6 +22,7 @@ platform="ILLUMINA"
 cd /data/; wget https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
 
 fasta="/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
+ls $fasta
 dbsnp="/data/dbsnp_138.hg19.vcf"
 known_sites="/data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
 
@@ -38,7 +39,7 @@ vqsr_dbsnp="/data/dbsnp_138.hg19.vcf"
 
 # Update with the location of the Sentieon software package and license file
 release_dir=/sentieon-genomics-201608
-echo 41
+
 # Other settings
 nt=32 #number of threads to use in computation
 workdir=$out
