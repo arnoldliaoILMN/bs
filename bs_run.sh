@@ -57,6 +57,7 @@ cd $workdir
 #The results of this call are dependent on the number of threads used. To have number of threads independent results, add chunk size option -K 100000000 
 echo starting bwa
 for i in ${!fastq1[@]};do 
+	echo working on ${fastq1[$i]} and ${fastq2[$i]}
 	$release_dir/bin/bwa mem -M -R "@RG\tID:group$i\tSM:$sample\tPL:$platform" -t $nt $fasta ${fastq1[$i]} ${fastq2[$i]} | $release_dir/bin/sentieon util sort -o sorted$i.bam -t $nt --sam2bam -i -
 done
 
