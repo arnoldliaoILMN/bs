@@ -7,7 +7,7 @@
 # named 1.fastq.gz and 2.fastq.gz
 # *******************************************
 #set -o verbose
-echo 161017 1418am
+echo 161017 1521pm
 export SENTIEON_LICENSE=master.sentieon.com:9002
 sample=$1
 fastq_dir=$2
