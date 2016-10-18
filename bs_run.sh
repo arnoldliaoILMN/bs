@@ -13,8 +13,8 @@ sample=$1
 fastq_dir=$2
 out=$3
 
-fastq1=`ls $fastq_dir/*_R1*_*fastq.gz`
-fastq2=`ls $fastq_dir/*_R2*_*fastq.gz`
+fastq1=($(ls $fastq_dir/*_R1*_*fastq.gz))
+fastq2=($(ls $fastq_dir/*_R2*_*fastq.gz))
 platform="ILLUMINA"
 #echo fastq is fastq1[0]
 # Update with the location of the reference data files
