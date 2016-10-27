@@ -68,6 +68,7 @@ for i in `ls sorted*bam`; do
 	sorted_arg="$sorted_arg $i"
 done
 echo ended bwa
+echo 161027
 echo sorted_arg is $sorted_arg
 # ******************************************
 # 2. Metrics
