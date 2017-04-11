@@ -1,13 +1,15 @@
 #!/bin/sh
-
-
 # *******************************************
 # Script to perform DNA seq variant calling
 # using a single sample with fastq files
 # named 1.fastq.gz and 2.fastq.gz
+# see the most recent example output 
+# https://basespace.illumina.com/s/2Wd5mCJRcbN5 
+# https://basespace.illumina.com/analyses/42927542/files/38604760?projectId=32957925 
+# 
 # *******************************************
 #set -o verbose
-echo 161017 1521pm
+echo 170411 1132 pm
 export SENTIEON_LICENSE=master.sentieon.com:9002
 sample=$1
 fastq_dir=$2
@@ -28,7 +30,7 @@ known_sites="/data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
 
 #determine whether Variant Quality Score Recalibration will be run
 #VQSR should only be run when there are sufficient variants called
-run_vqsr="yes"
+run_vqsr="no"
 # Update with the location of the resource files for VQSR
 vqsr_Mill="/data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
 vqsr_1000G_omni="/data/1000G_omni2.5.hg19.sites.vcf"
@@ -41,14 +43,15 @@ vqsr_dbsnp="/data/dbsnp_138.hg19.vcf"
 release_dir=/sentieon-genomics-201608
 
 # Other settings
-nt=32 #number of threads to use in computation
+nt=16 #number of threads to use in computation
 workdir=$out
-
+run_joint="no"
 # ******************************************
 # 0. Setup
 # ******************************************
 mkdir -p $workdir
 logfile=$workdir/run.log
+exec >$logfile 2>&1
 cd $workdir
 
 # ******************************************
@@ -56,6 +59,7 @@ cd $workdir
 # ******************************************
 #The results of this call are dependent on the number of threads used. To have number of threads independent results, add chunk size option -K 100000000 
 echo starting bwa
+## may have multiple fastqs.   one bam per fastq?
 for i in ${!fastq1[@]};do 
 	echo working on ${fastq1[$i]} and ${fastq2[$i]}
 	echo $release_dir/bin/bwa mem -M -R "@RG\tID:group$i\tSM:$sample\tPL:$platform" -t $nt $fasta ${fastq1[$i]} ${fastq2[$i]}
@@ -63,6 +67,7 @@ for i in ${!fastq1[@]};do
 	$release_dir/bin/bwa mem -M -R "@RG\tID:group$i\tSM:$sample\tPL:$platform" -t $nt $fasta ${fastq1[$i]} ${fastq2[$i]} | $release_dir/bin/sentieon util sort -o sorted$i.bam -t $nt --sam2bam -i -
 done
 
+# given a list of bams
 sorted_arg='-i'
 for i in `ls sorted*bam`; do 
 	echo sorted_arg is $sorted_arg
