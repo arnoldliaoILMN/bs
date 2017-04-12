@@ -8,7 +8,7 @@
 # https://basespace.illumina.com/analyses/42927542/files/38604760?projectId=32957925 
 # 
 # *******************************************
-#set -o verbose
+set -o verbose
 echo 170411 1132 pm
 export SENTIEON_LICENSE=master.sentieon.com:9002
 sample=$1
