@@ -43,7 +43,7 @@ vqsr_dbsnp="/data/dbsnp_138.hg19.vcf"
 release_dir=/sentieon-genomics-201608
 
 # Other settings
-nt=16 #number of threads to use in computation
+nt=32 #number of threads to use in computation
 workdir=$out
 run_joint="no"
 # ******************************************
