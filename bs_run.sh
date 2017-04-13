@@ -71,7 +71,7 @@ done
 sorted_arg='-i'
 for i in `ls sorted*bam`; do 
 	echo sorted_arg is $sorted_arg
-	sorted_arg="$sorted_arg $i"
+	sorted_arg="$sorted_arg -i $i"
 	echo sorted_arg is $sorted_arg
 done
 echo ended bwa
