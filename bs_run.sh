@@ -21,7 +21,7 @@ platform="ILLUMINA"
 #echo fastq is fastq1[0]
 # Update with the location of the reference data files
 ## going to have to redo these
-cd /data/; wget https://s3.amazonaws.com/gatkres/GATK.tgz ; tar -zxvf GATK.tgz
+cd /data/; wget https://s3.amazonaws.com/gatkres/GATK.tgz 2>&1 /dev/null ; tar -zxvf GATK.tgz
 
 fasta="/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
 ls $fasta
@@ -68,7 +68,7 @@ for i in ${!fastq1[@]};do
 done
 
 # given a list of bams
-sorted_arg='-i'
+sorted_arg=''
 for i in `ls sorted*bam`; do 
 	echo sorted_arg is $sorted_arg
 	sorted_arg="$sorted_arg -i $i"
