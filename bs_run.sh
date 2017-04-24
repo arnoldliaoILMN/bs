@@ -8,8 +8,9 @@
 # https://basespace.illumina.com/analyses/42927542/files/38604760?projectId=32957925 
 # 
 # *******************************************
-set -o verbose
-echo 170411 1132 pm
+#set -o verbose
+echo akl start
+date
 export SENTIEON_LICENSE=master.sentieon.com:9002
 sample=$1
 fastq_dir=$2
@@ -61,6 +62,8 @@ cd $workdir
 echo starting bwa
 ## may have multiple fastqs.   one bam per fastq?
 for i in ${!fastq1[@]};do 
+	echo akl bwa $i
+	date
 	echo working on ${fastq1[$i]} and ${fastq2[$i]}
 	echo $release_dir/bin/bwa mem -M -R "@RG\tID:group$i\tSM:$sample\tPL:$platform" -t $nt $fasta ${fastq1[$i]} ${fastq2[$i]}
 	echo $release_dir/bin/sentieon util sort -o sorted$i.bam -t $nt --sam2bam -i
@@ -74,8 +77,8 @@ for i in `ls sorted*bam`; do
 	sorted_arg="$sorted_arg -i $i"
 	echo sorted_arg is $sorted_arg
 done
-echo ended bwa
-echo 161027
+echo akl ended bwa starting metrics
+date
 echo sorted_arg is $sorted_arg
 # ******************************************
 # 2. Metrics
@@ -87,6 +90,8 @@ $release_dir/bin/sentieon plot metrics -o metrics-report.pdf gc=gc_metrics.txt q
 # ******************************************
 # 3. Remove Duplicate Reads
 # ******************************************
+echo akl start dup
+date
 $release_dir/bin/sentieon driver  -t $nt $sorted_arg --algo LocusCollector --fun score_info score.txt
 
 $release_dir/bin/sentieon driver  -t $nt $sorted_arg --algo Dedup --rmdup --score_info score.txt --metrics dedup_metrics.txt deduped.bam
@@ -95,12 +100,15 @@ $release_dir/bin/sentieon driver  -t $nt $sorted_arg --algo Dedup --rmdup --scor
 # ******************************************
 # 4. Indel realigner
 # ******************************************
-
+echo akl start indel realigner
+date
 $release_dir/bin/sentieon driver -r $fasta  -t $nt -i deduped.bam --algo Realigner -k $known_sites realigned.bam
 
 # ******************************************
 # 5. Base recalibration
 # ******************************************
+echo akl start base recal
+date
 $release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam --algo QualCal -k $dbsnp -k $known_sites recal_data.table
 $release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam -q recal_data.table --algo QualCal -k $dbsnp -k $known_sites recal_data.table.post
 $release_dir/bin/sentieon driver -t $nt --algo QualCal --plot --before recal_data.table --after recal_data.table.post recal.csv
@@ -112,11 +120,15 @@ $release_dir/bin/sentieon plot bqsr -o recal_plots.pdf recal.csv
 # ******************************************
 # 6a. UG Variant caller
 # ******************************************
+echo akl start UG var caller
+date
 $release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam -q recal_data.table --algo Genotyper -d $dbsnp --emit_conf=10 --call_conf=30 output-ug.vcf
 
 # ******************************************
 # 6b. HC Variant caller
 # ******************************************
+echo akl start HC var caller
+date
 $release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam -q recal_data.table --algo Haplotyper -d $dbsnp --emit_conf=10 --call_conf=30 --prune_factor=3 output-hc.vcf --algo ReadWriter recaled.bam
 
 # ******************************************
@@ -165,3 +177,5 @@ if [ "$run_vqsr" = "yes" ]; then
 	 $release_dir/bin/sentieon plot vqsr -o vqsr_INDEL.VQSR.pdf vqsr_INDEL.ug.plot_file.txt
 fi
 
+echo akl end
+date
