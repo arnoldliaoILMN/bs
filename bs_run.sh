@@ -22,30 +22,31 @@ platform="ILLUMINA"
 #echo fastq is fastq1[0]
 # Update with the location of the reference data files
 ## going to have to redo these
-cd /data/; wget https://s3.amazonaws.com/gatkres/GATK.tgz 2>&1 /dev/null ; tar -zxvf GATK.tgz
+cd /data/scratch; wget https://s3.amazonaws.com/gatkres/GATK.tgz 2>&1 /dev/null ; tar -zxvf GATK.tgz
 
 fasta="/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
 ls $fasta
-dbsnp="/data/dbsnp_138.hg19.vcf"
-known_sites="/data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+dbsnp="/data/scratch/dbsnp_138.hg19.vcf"
+known_sites="/data/scratch/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
 
 #determine whether Variant Quality Score Recalibration will be run
 #VQSR should only be run when there are sufficient variants called
 run_vqsr="no"
 # Update with the location of the resource files for VQSR
-vqsr_Mill="/data/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
-vqsr_1000G_omni="/data/1000G_omni2.5.hg19.sites.vcf"
-vqsr_hapmap="/data/hapmap_3.3.hg19.sites.vcf"
-vqsr_1000G_phase1="/data/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
-vqsr_1000G_phase1_indel="/data/1000G_phase1.indels.hg19.sites.vcf"
-vqsr_dbsnp="/data/dbsnp_138.hg19.vcf"
+vqsr_Mill="/data/scratch/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf"
+vqsr_1000G_omni="/data/scratch/1000G_omni2.5.hg19.sites.vcf"
+vqsr_hapmap="/data/scratch/hapmap_3.3.hg19.sites.vcf"
+vqsr_1000G_phase1="/data/scratch/1000G_phase1.snps.high_confidence.hg19.sites.vcf"
+vqsr_1000G_phase1_indel="/data/scratch/1000G_phase1.indels.hg19.sites.vcf"
+vqsr_dbsnp="/data/scratch/dbsnp_138.hg19.vcf"
 
 # Update with the location of the Sentieon software package and license file
 release_dir=/sentieon-genomics-201608
 
 # Other settings
 nt=32 #number of threads to use in computation
-workdir=$out
+workdir="/data/scratch/workdir"
+$workdir=$out
 run_joint="no"
 # ******************************************
 # 0. Setup
@@ -176,6 +177,11 @@ if [ "$run_vqsr" = "yes" ]; then
 	#plot the report
 	 $release_dir/bin/sentieon plot vqsr -o vqsr_INDEL.VQSR.pdf vqsr_INDEL.ug.plot_file.txt
 fi
-
-echo akl end
+rm sorted*
+rm deduped.*
+rm realigned.*
+echo akl end sentieon. start moving data
+date
+mv $workdir/* $out
+echo end moving
 date
