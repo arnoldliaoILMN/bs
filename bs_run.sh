@@ -120,9 +120,9 @@ $release_dir/bin/sentieon plot bqsr -o recal_plots.pdf recal.csv
 # ******************************************
 # 6a. UG Variant caller
 # ******************************************
-echo akl start UG var caller
-date
-$release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam -q recal_data.table --algo Genotyper -d $dbsnp --emit_conf=10 --call_conf=30 output-ug.vcf
+#echo akl start UG var caller
+#date
+#$release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam -q recal_data.table --algo Genotyper -d $dbsnp --emit_conf=10 --call_conf=30 output-ug.vcf
 
 # ******************************************
 # 6b. HC Variant caller
