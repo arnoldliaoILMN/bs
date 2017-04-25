@@ -53,7 +53,7 @@ run_joint="no"
 # ******************************************
 mkdir -p $workdir
 logfile=$workdir/run.log
-exec >$logfile 2>&1
+#exec >$logfile 2>&1
 cd $workdir
 
 # ******************************************
