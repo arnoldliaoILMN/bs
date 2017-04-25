@@ -180,7 +180,7 @@ if [ "$run_vqsr" = "yes" ]; then
 fi
 rm sorted*
 rm deduped.*
-rm realigned.*
+#rm realigned.*
 echo akl end sentieon. start moving data
 date
 mv $workdir/* $out
