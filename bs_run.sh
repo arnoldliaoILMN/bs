@@ -130,7 +130,7 @@ $release_dir/bin/sentieon plot bqsr -o recal_plots.pdf recal.csv
 # ******************************************
 echo akl start HC var caller
 date
-$release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam -q recal_data.table --algo Haplotyper -d $dbsnp --emit_conf=10 --call_conf=30 --prune_factor=3 output-hc.genome.vcf 
+$release_dir/bin/sentieon driver -r $fasta -t $nt -i realigned.bam -q recal_data.table --algo Haplotyper -d $dbsnp --emit_conf=10 --call_conf=30 --emit_mode gvcf output-hc.genome.vcf 
 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo GVCFtyper output-hc.vcf  output-hc.genome.vcf
 
 #  commented out recal.bam--algo ReadWriter recaled.bam
