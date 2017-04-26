@@ -180,6 +180,11 @@ if [ "$run_vqsr" = "yes" ]; then
 fi
 rm sorted*
 rm deduped.*
+mkdir metrics
+mkdir bam_vcf
+mv *metrics* metrics
+mv *bam* bam_vcf
+
 #rm realigned.*
 for i in *vcf
 do
@@ -187,6 +192,8 @@ do
 /usr/local/bin/tabix -p vcf ${i}.gz
 rm $i
 done
+
+mv *vcf* bam_vcf
 
 echo akl end sentieon. start moving data
 date
