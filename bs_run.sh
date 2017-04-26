@@ -45,8 +45,8 @@ release_dir=/sentieon-genomics-201608
 
 # Other settings
 nt=32 #number of threads to use in computation
-workdir="/data/scratch/workdir"
-$workdir=$out
+workdir="/data/scratch/sentieon"
+#$workdir=$out
 run_joint="no"
 # ******************************************
 # 0. Setup
