@@ -181,6 +181,12 @@ fi
 rm sorted*
 rm deduped.*
 #rm realigned.*
+for i in *vcf
+do
+/usr/local/bin/bgzip -c $i > ${i}.gz
+/usr/local/bin/tabix -p vcf ${i}.gz
+done
+
 echo akl end sentieon. start moving data
 date
 mkdir -p $out
