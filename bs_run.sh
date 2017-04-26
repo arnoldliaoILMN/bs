@@ -183,6 +183,7 @@ rm deduped.*
 #rm realigned.*
 echo akl end sentieon. start moving data
 date
+mkdir -p $out
 mv $workdir/* $out
 echo end moving
 date
