@@ -185,6 +185,7 @@ for i in *vcf
 do
 /usr/local/bin/bgzip -c $i > ${i}.gz
 /usr/local/bin/tabix -p vcf ${i}.gz
+rm $i
 done
 
 echo akl end sentieon. start moving data
