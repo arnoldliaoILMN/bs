@@ -49,6 +49,15 @@ then
     tar -I lbzip2 -xvf b37_decoy.tar.bz2
     fasta="/data/scratch/human_g1k_v37_decoy.fasta"
     ls $fasta
+elif [ "$reference" == "hg38" ]
+then
+    echo Using $reference 
+    ref_short="hg38"
+    aria2c -x 16 -s 16  https://s3.amazonaws.com/hg38gatkres/hg38GATK.tar.bz2
+#    wget https://s3.amazonaws.com/illumina-ukch-compbio/sentieon_resources/b37_decoy.tar.bz2 --quiet
+    tar -jxvf hg38GATK.tar.bz2
+    fasta="/data/scratch/Homo_sapiens_assembly38.fasta"
+    ls $fasta
 else
     echo unknown reference genome: $reference
     exit 1
