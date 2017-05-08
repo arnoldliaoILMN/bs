@@ -35,7 +35,8 @@ then
     ref="hg19"
     # Update with the location of the reference data files
     ## going to have to redo these    
-    wget https://s3.amazonaws.com/gatkres/GATK.tgz 2>&1 /dev/null
+#    wget https://s3.amazonaws.com/gatkres/GATK.tgz 2>&1 /dev/null
+    aria2c -x 16 -s 16  https://s3.amazonaws.com/gatkres/GATK.tgz 
     tar -zxvf GATK.tgz
     fasta="/genomes/Homo_sapiens/UCSC/hg19/Sequence/WholeGenomeFasta/genome.fa"
     ls $fasta
@@ -43,7 +44,8 @@ elif [ "$reference" == "b37_decoy" ]
 then
     echo Using $reference 
     ref_short="b37"
-    wget https://s3.amazonaws.com/illumina-ukch-compbio/sentieon_resources/b37_decoy.tar.bz2 --quiet
+    aria2c -x 16 -s 16  https://s3.amazonaws.com/illumina-ukch-compbio/sentieon_resources/b37_decoy.tar.bz2
+#    wget https://s3.amazonaws.com/illumina-ukch-compbio/sentieon_resources/b37_decoy.tar.bz2 --quiet
     tar -I lbzip2 -xvf b37_decoy.tar.bz2
     fasta="/data/scratch/human_g1k_v37_decoy.fasta"
     ls $fasta
