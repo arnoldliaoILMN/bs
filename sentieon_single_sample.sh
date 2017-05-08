@@ -43,10 +43,11 @@ elif [ "$reference" == "b37_decoy" ]
 then
     echo Using $reference 
     ref_short="b37"
-    fasta="gatk_b37/human_g1k_v37_decoy.fasta"
-    ls $fasta
     wget https://s3.amazonaws.com/illumina-ukch-compbio/sentieon_resources/b37_decoy.tar.bz2 2>&1 /dev/null
     tar -I lbzip2 -xvf b37_decoy.tar.bz2
+    fasta="human_g1k_v37_decoy.fasta"
+    ls $fasta
+    
 else
     echo unknown reference genome: $reference
     exit 1
