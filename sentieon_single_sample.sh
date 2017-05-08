@@ -45,7 +45,7 @@ then
     ref_short="b37"
     wget https://s3.amazonaws.com/illumina-ukch-compbio/sentieon_resources/b37_decoy.tar.bz2 2>&1 /dev/null
     tar -I lbzip2 -xvf b37_decoy.tar.bz2
-    fasta="human_g1k_v37_decoy.fasta"
+    fasta="/data/scratch/human_g1k_v37_decoy.fasta"
     ls $fasta
     
 else
