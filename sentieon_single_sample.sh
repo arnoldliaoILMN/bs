@@ -29,7 +29,7 @@ run_vqsr="no"
 # Update with the location of the resource files for VQSR
 
 cd /data/scratch; 
-if [ "$reference" == "hg19"]
+if [ "$reference" == "hg19" ]
 then
     echo Using $reference
     ref="hg19"
