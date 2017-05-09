@@ -25,7 +25,7 @@ platform="ILLUMINA"
 
 #determine whether Variant Quality Score Recalibration will be run
 #VQSR should only be run when there are sufficient variants called
-run_vqsr="no"
+run_vqsr="yes"
 # Update with the location of the resource files for VQSR
 
 cd /data/scratch; 
@@ -169,7 +169,8 @@ $release_dir/bin/sentieon driver -r $fasta -t $nt --algo GVCFtyper ${sample}.vcf
 # ******************************************
 # 7. Variant Recalibration
 # ******************************************
-if [ "$run_vqsr" = "yes" ]; then
+if [ "$run_vqsr" = "yes" ]; 
+then
 	#for SNP
 	#create the resource argument
 	resource_text="--resource $vqsr_1000G_phase1 --resource_param 1000G,known=false,training=true,truth=false,prior=10.0 "
@@ -182,11 +183,11 @@ if [ "$run_vqsr" = "yes" ]; then
 	  annotate_text="$annotate_text --annotation $annotation"
 	done
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz$resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.ug.plot_file.txt --nthr $nt --max_gaussians 8 --tranches_file vqsr_SNP.ug.tranches vqsr_SNP.ug.recal
+	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt --nthr $nt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
 	#apply the VQSR
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz--var_type SNP --recal vqsr_SNP.ug.recal --tranches_file vqsr_SNP.ug.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.vcf
+	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.vcf.gz
 	#plot the report
-	$release_dir/bin/sentieon plot vqsr -o vqsr_SNP.VQSR.pdf vqsr_SNP.ug.plot_file.txt
+	$release_dir/bin/sentieon plot vqsr -o vqsr_SNP.VQSR.pdf vqsr_SNP.plot_file.txt
 	
 	#for indels do the recalibration on the SNP vcf
 	type="INDEL"
@@ -205,18 +206,16 @@ if [ "$run_vqsr" = "yes" ]; then
 	echo $annotate_text
 
 	#Run the VQSR
-	 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz$resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.ug.plot_file.txt --nthr $nt --max_gaussians 4 --tranches_file vqsr_INDEL.ug.tranches vqsr_INDEL.ug.recal
+	 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz$resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt --nthr $nt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
 	#apply the VQSR
-	 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz--var_type INDEL --recal vqsr_INDEL.ug.recal --tranches_file vqsr_INDEL.ug.tranches --sensitivity 99.5 ${sample}.vqsr_INDEL.recaled.vcf
+	 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz--var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr_INDEL.recaled.vcf.gz
 	#plot the report
-	 $release_dir/bin/sentieon plot vqsr -o vqsr_INDEL.VQSR.pdf vqsr_INDEL.ug.plot_file.txt
+	 $release_dir/bin/sentieon plot vqsr -o vqsr_INDEL.VQSR.pdf vqsr_INDEL.plot_file.txt
 fi
 rm sorted*
 rm deduped.*
 mkdir metrics
-mkdir bam_vcf
 mv *metrics* metrics
-mv *bam* bam_vcf
 
 #rm realigned.*
 for i in *vcf
