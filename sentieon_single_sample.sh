@@ -183,7 +183,7 @@ then
 	  annotate_text="$annotate_text --annotation $annotation"
 	done
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt --nthr $nt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
+	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt -t $nt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
 	#plot the report
 	$release_dir/bin/sentieon plot vqsr -o vqsr_SNP.VQSR.pdf vqsr_SNP.plot_file.txt
 	
@@ -204,7 +204,7 @@ then
 	echo $annotate_text
 
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt --nthr $nt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
+	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt -t $nt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
 
 	#apply the VQSR
 	 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr_INDEL.recaled.vcf.gz
@@ -234,7 +234,6 @@ do
 rm $i
 done
 
-mv *vcf* bam_vcf
 
 echo akl end sentieon. start moving data
 date
