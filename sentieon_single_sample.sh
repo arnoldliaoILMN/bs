@@ -179,7 +179,8 @@ then
 	resource_text="$resource_text --resource $vqsr_hapmap --resource_param hapmap,known=false,training=true,truth=true,prior=15.0"
 	#create the annotation argument
 	annotation_array="QD MQ MQRankSum ReadPosRankSum FS"
-	for annotation in $annotation_array; do
+	for annotation in $annotation_array;
+	do
 	  annotate_text="$annotate_text --annotation $annotation"
 	done
 	#Run the VQSR
@@ -217,8 +218,7 @@ then
 	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.tmp.vcf
 	##indels
 	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr.vcf.gz
-	rm	${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove
-	
+	rm	${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove	
 fi
 
 rm sorted*
