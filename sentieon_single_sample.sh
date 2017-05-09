@@ -216,7 +216,7 @@ then
 	##snps
 	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.tmp.vcf
 	##indels
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr.recaled.vcf.gz
+	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr.vcf.gz
 	rm	${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove
 	
 fi
