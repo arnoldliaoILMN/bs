@@ -184,7 +184,7 @@ then
 	  annotate_text="$annotate_text --annotation $annotation"
 	done
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal   -v ${sample}.gvcftyper.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
+	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal -v ${sample}.gvcftyper.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
 	#plot the report
 	$release_dir/bin/sentieon plot vqsr -o vqsr_SNP.VQSR.pdf vqsr_SNP.plot_file.txt
 	
@@ -216,10 +216,11 @@ then
 	##indels
 	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vcf.gz
 
-	##cleanup
-#	rm ${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove
-#	rm ${sample}.gvcftyper.vcf.gz
+	##remove intermediate vcfs
+	rm ${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove
+	rm ${sample}.gvcftyper.vcf.gz
 else
+    ##else no VQSR so we output the gvcftyper vcf
     mv ${sample}.gvcftyper.vcf.gz ${sample}.vcf.gz
 fi
 
