@@ -184,7 +184,7 @@ then
 	  annotate_text="$annotate_text --annotation $annotation"
 	done
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt -t $nt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
+	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal  --nthr $nt -v ${sample}.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
 	#plot the report
 	$release_dir/bin/sentieon plot vqsr -o vqsr_SNP.VQSR.pdf vqsr_SNP.plot_file.txt
 	
@@ -205,19 +205,16 @@ then
 	echo $annotate_text
 
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt -t $nt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
-
-	#apply the VQSR
-	 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr_INDEL.recaled.vcf.gz
+	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal --nthr $nt -v ${sample}.vcf.gz $resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
 
 	#plot the report
 	$release_dir/bin/sentieon plot vqsr -o vqsr_INDEL.VQSR.pdf vqsr_INDEL.plot_file.txt
 
 	#apply the VQSR
 	##snps
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.tmp.vcf
+	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.tmp.vcf
 	##indels
-	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr.vcf.gz
+	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr.vcf.gz
 	rm	${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove	
 fi
 
