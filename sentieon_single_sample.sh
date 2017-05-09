@@ -205,6 +205,10 @@ then
 
 	#Run the VQSR
 	$release_dir/bin/sentieon driver -r $fasta -t $nt --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt --nthr $nt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
+
+	#apply the VQSR
+	 $release_dir/bin/sentieon driver -r $fasta -t $nt --algo ApplyVarCal -v ${sample}.vcf.gz --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr_INDEL.recaled.vcf.gz
+
 	#plot the report
 	$release_dir/bin/sentieon plot vqsr -o vqsr_INDEL.VQSR.pdf vqsr_INDEL.plot_file.txt
 
