@@ -164,7 +164,7 @@ $release_dir/bin/sentieon plot bqsr -o recal_plots.pdf recal.csv
 echo akl start HC var caller
 date
 $release_dir/bin/sentieon driver -r $fasta -t $nt -i ${sample}.bam -q recal_data.table --algo Haplotyper -d $dbsnp --emit_conf=10 --call_conf=30 --emit_mode gvcf ${sample}.genome.vcf.gz
-$release_dir/bin/sentieon driver -r $fasta -t $nt --algo GVCFtyper ${sample}.vcf.gz  ${sample}.genome.vcf.gz
+$release_dir/bin/sentieon driver -r $fasta -t $nt --algo GVCFtyper ${sample}.gvcftyper.vcf  ${sample}.genome.vcf.gz
 
 # ******************************************
 # 7. Variant Recalibration
@@ -184,7 +184,7 @@ then
 	  annotate_text="$annotate_text --annotation $annotation"
 	done
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal   -v ${sample}.vcf.gz $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
+	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal   -v ${sample}.gvcftyper.vcf $resource_text $annotate_text --var_type SNP --plot_file vqsr_SNP.plot_file.txt --max_gaussians 8 --tranches_file vqsr_SNP.tranches vqsr_SNP.recal
 	#plot the report
 	$release_dir/bin/sentieon plot vqsr -o vqsr_SNP.VQSR.pdf vqsr_SNP.plot_file.txt
 	
@@ -205,31 +205,24 @@ then
 	echo $annotate_text
 
 	#Run the VQSR
-	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal -v ${sample}.vcf.gz $resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
+	$release_dir/bin/sentieon driver -r $fasta  --algo VarCal -v ${sample}.gvcftyper.vcf $resource_text $annotate_text --var_type INDEL --plot_file vqsr_INDEL.plot_file.txt --max_gaussians 4 --tranches_file vqsr_INDEL.tranches vqsr_INDEL.recal
 
 	#plot the report
 	$release_dir/bin/sentieon plot vqsr -o vqsr_INDEL.VQSR.pdf vqsr_INDEL.plot_file.txt
 
 	#apply the VQSR
 	##snps
-	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.tmp.vcf
+	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.gvcftyper.vcf --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.tmp.vcf
 	##indels
-	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vqsr.vcf.gz
-	rm	${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove	
+	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vcf.gz
+	rm	${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove
+	rm ${sample}.gvcftyper.vcf
 fi
 
 rm sorted*
 rm deduped.*
 mkdir metrics
 mv *metrics* metrics
-
-#rm realigned.*
-for i in *vcf
-do
-/usr/local/bin/bgzip -c $i > ${i}.gz
-/usr/local/bin/tabix -p vcf ${i}.gz
-rm $i
-done
 
 
 echo akl end sentieon. start moving data
