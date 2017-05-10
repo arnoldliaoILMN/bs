@@ -36,7 +36,7 @@ cd /data/scratch;
 if [ "$reference" == "hg19" ]
 then
     echo Using $reference
-    ref="hg19"
+    ref_short="hg19"
     # Update with the location of the reference data files
     ## going to have to redo these    
 #    wget https://s3.amazonaws.com/gatkres/GATK.tgz 2>&1 /dev/null
