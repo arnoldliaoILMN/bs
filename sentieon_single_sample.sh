@@ -16,8 +16,11 @@ sample=$1
 fastq_dir=$2
 out=$3
 reference=$4 #reference=hg19 ##which set of reference files to use.
-VQSR_SENSITIVITY_SNP=99.5
-VQSR_SENSITIVITY_INDEL=99.5
+# VQSR_SENSITIVITY_SNP=99.5
+# VQSR_SENSITIVITY_INDEL=99.5
+
+VQSR_SENSITIVITY_SNP=$5
+VQSR_SENSITIVITY_INDEL=$6
 
 fastq1=($(ls $fastq_dir/*_R1*_*fastq.gz))
 fastq2=($(ls $fastq_dir/*_R2*_*fastq.gz))
@@ -164,8 +167,8 @@ $release_dir/bin/sentieon plot bqsr -o recal_plots.pdf recal.csv
 # ******************************************
 echo akl start HC var caller
 date
-$release_dir/bin/sentieon driver -r $fasta -t $nt -i ${sample}.bam -q recal_data.table --algo Haplotyper -d $dbsnp --emit_conf=10 --call_conf=30 --emit_mode gvcf ${sample}.genome.vcf.gz
-$release_dir/bin/sentieon driver -r $fasta -t $nt --algo GVCFtyper ${sample}.gvcftyper.vcf.gz  ${sample}.genome.vcf.gz
+$release_dir/bin/sentieon driver -r $fasta -t $nt -i ${sample}.bam -q recal_data.table --algo Haplotyper -d $dbsnp --emit_conf=10 --call_conf=30 --emit_mode gvcf ${sample}.g.vcf.gz
+$release_dir/bin/sentieon driver -r $fasta -t $nt --algo GVCFtyper ${sample}.gvcftyper.vcf.gz  ${sample}.g.vcf.gz
 
 # ******************************************
 # 7. Variant Recalibration
