@@ -219,6 +219,7 @@ then
 	##remove intermediate vcfs
 	rm ${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove
 	rm ${sample}.gvcftyper.vcf.gz
+	rm ${sample}.gvcftyper.vcf.gz.tbi
 else
     ##else no VQSR so we output the gvcftyper vcf
     mv ${sample}.gvcftyper.vcf.gz ${sample}.vcf.gz
