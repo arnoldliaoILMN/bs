@@ -16,7 +16,8 @@ sample=$1
 fastq_dir=$2
 out=$3
 reference=$4 #reference=hg19 ##which set of reference files to use.
-
+VQSR_SENSITIVITY_SNP=99.5
+VQSR_SENSITIVITY_INDEL=99.5
 
 fastq1=($(ls $fastq_dir/*_R1*_*fastq.gz))
 fastq2=($(ls $fastq_dir/*_R2*_*fastq.gz))
@@ -212,9 +213,9 @@ then
 
 	#apply the VQSR
 	##snps
-	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.gvcftyper.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity 99.5 ${sample}.vqsr_SNP.recaled.tmp.vcf
+	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.gvcftyper.vcf.gz --var_type SNP --recal vqsr_SNP.recal --tranches_file vqsr_SNP.tranches --sensitivity $VQSR_SENSITIVITY_SNP ${sample}.vqsr_SNP.recaled.tmp.vcf
 	##indels
-	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity 99.5 ${sample}.vcf.gz
+	$release_dir/bin/sentieon driver -r $fasta --algo ApplyVarCal -v ${sample}.vqsr_SNP.recaled.tmp.vcf --var_type INDEL --recal vqsr_INDEL.recal --tranches_file vqsr_INDEL.tranches --sensitivity $VQSR_SENSITIVITY_INDEL ${sample}.vcf.gz
 
 	##remove intermediate vcfs
 	rm ${sample}.vqsr_SNP.recaled.tmp.vcf ##temp file. remove
