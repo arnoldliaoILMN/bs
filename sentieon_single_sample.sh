@@ -78,7 +78,7 @@ known_sites="/data/scratch/Mills_and_1000G_gold_standard.indels.${ref_short}.sit
 
 
 # Update with the location of the Sentieon software package and license file
-release_dir=/data/sentieon-genomics-201704
+release_dir=/sentieon-genomics-201704
 
 # Other settings
 nt=32 #number of threads to use in computation
