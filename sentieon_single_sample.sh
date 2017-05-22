@@ -243,7 +243,9 @@ mv *metrics* metrics
 echo akl end sentieon. start moving data
 date
 mkdir -p $out
-mv $workdir/* $out
+mv $workdir/*.vcf.gz* $out
+mv $workdir/*.bam* $out
+mv $workdir/*.pdf $out
 echo end moving
 date
 
