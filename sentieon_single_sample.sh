@@ -234,10 +234,15 @@ do
     /usr/local/bin/tabix $i
 done
 
+## generating stats for metrics
+bcftools stats --threads 36 -f PASS -s ${sample}.vcf.gz > ${sample}.pass.stats
+bcftools stats --threads 36 -s ${sample}.vcf.gz > ${sample}.raw.stats
+python /bcftools_stats_summary.py ${sample}.pass.stats ${sample}.raw.stats 
+
 rm sorted*
 rm deduped.*
-mkdir metrics
-mv *metrics* metrics
+#mkdir metrics
+#mv *metrics* metrics
 
 
 echo akl end sentieon. start moving data
@@ -246,6 +251,8 @@ mkdir -p $out
 mv $workdir/*.vcf.gz* $out
 mv $workdir/*.bam* $out
 mv $workdir/*.pdf $out
+mv $workdir/*json $out
+mv $workdir/*stats $out
 echo end moving
 date
 
