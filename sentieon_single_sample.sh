@@ -12,6 +12,9 @@
 echo akl start
 date
 export SENTIEON_LICENSE=master.sentieon.com:9002
+export SENTIEON_LICENSE=master.sentieon.com:9003
+
+
 sample=$1
 fastq_dir=$2
 out=$3
